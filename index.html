@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vault Of Love ❤️</title>
+    <style>
+        :root { --velvet: #4a0404; --gold: #d4af37; --spotify: #1DB954; }
+        body, html { margin:0; padding:0; width:100%; height:100%; font-family: 'Georgia', serif; background: #0b090a; color: white; overflow: hidden; }
+        
+        .screen { position: fixed; top:0; left:0; width:100%; height:100%; display:none; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; }
+        .active { display: flex; animation: fadeIn 2s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* PASSCODE */
+        #stage1 { background: radial-gradient(circle, #660708, #000); z-index: 100; }
+        .key { width: 70px; height: 70px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; color: var(--gold); margin: 5px; background: rgba(212, 175, 55, 0.05); }
+        .dot { width: 12px; height: 12px; border: 1px solid var(--gold); border-radius: 50%; margin: 5px; display: inline-block; }
+        .dot.filled { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+
+        /* MAP */
+        #stage2 { background: url('map-bg.jpg') center/cover; }
+        .travel-line { width: 80%; height: 4px; background: rgba(255,255,255,0.2); position: relative; margin: 50px 0; border-radius: 2px; }
+        #heart-traveler { position: absolute; left: 0; top: -15px; font-size: 30px; transition: left 5s linear; }
+
+        /* FULL SPOTIFY PLAYLIST SCROLL (12 SONGS) */
+        .spot-container { width: 85%; max-width: 320px; height: 500px; overflow-y: scroll; scroll-snap-type: y mandatory; border: 1px solid #333; border-radius: 20px; background: #121212; padding: 15px; }
+        .spot-card { width: 100%; height: 480px; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+        .spot-card img { width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); margin-bottom: 10px; }
+        .spot-msg { color: var(--spotify); font-size: 0.8rem; font-style: italic; opacity: 0.9; }
+
+        /* LETTER SCROLL */
+        .letter-scroll { width: 85%; max-width: 400px; height: 65vh; background: #fff; overflow-y: scroll; border-radius: 10px; padding: 10px; }
+        .letter-page { width: 100%; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; }
+
+        /* HEART & EVIL EYE RAIN */
+        .heart-particle { position: fixed; top: -10%; font-size: 25px; z-index: 5; animation: fall linear forwards; pointer-events: none; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        /* BLUSH */
+        #blush-img { width: 280px; border-radius: 20px; border: 3px solid var(--gold); z-index: 20; position: relative; }
+        .meter-bg { width: 280px; height: 12px; background: #222; border-radius: 10px; margin-top: 25px; overflow: hidden; z-index: 20; }
+        #meter-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ff4d6d, #ff0000); transition: 0.4s; }
+
+        .btn { margin-top: 30px; padding: 15px 35px; border-radius: 50px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: bold; cursor: pointer; z-index: 20; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <audio id="bgm" loop><source src="bgm" type="audio/mpeg"></audio>
+
+    <div id="stage1" class="screen active">
+        <h2 style="color:var(--gold); letter-spacing: 4px;">PRIVATE VAULT</h2>
+        <div style="margin: 20px 0;"><div id="d1" class="dot"></div><div id="d2" class="dot"></div><div id="d3" class="dot"></div><div id="d4" class="dot"></div></div>
+        <div style="display:grid; grid-template-columns: repeat(3, 80px); gap:15px;">
+            <div class="key" onclick="press(1)">1</div><div class="key" onclick="press(2)">2</div><div class="key" onclick="press(3)">3</div>
+            <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
+            <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
+            <div></div><div class="key" onclick="press(0)">0</div>
+        </div>
+        <p style="font-size: 0.7rem; color: var(--gold); margin-top: 20px; opacity: 0.5;">Hint: 12/11/24</p>
+    </div>
+
+    <div id="stage2" class="screen">
+        <h3 style="z-index:10; letter-spacing: 2px;">1,628 km Bridged.</h3>
+        <div class="travel-line"><div id="heart-traveler">❤️</div></div>
+        <button id="bridge-btn" class="btn" onclick="startTravel()">START JOURNEY</button>
+        <button id="map-next" class="btn" style="display:none;" onclick="next(3)">EXPLORE OUR TUNES</button>
+    </div>
+
+    <div id="stage3" class="screen" style="background: #000;">
+        <h3 style="color:var(--spotify); margin-bottom:15px; letter-spacing: 1px;">Our Songs, Shailly...</h3>
+        <div class="spot-container">
+            <div class="spot-card"><img src="spot1.jpg"><p class="spot-msg">Our Story in Lyrics...</p></div>
+            <div class="spot-card"><img src="spot2.jpg"><p class="spot-msg">Missing you always.</p></div>
+            <div class="spot-card"><img src="spot3.jpg"><p class="spot-msg">Thinking of us.</p></div>
+            <div class="spot-card"><img src="spot4.jpg"><p class="spot-msg">The vibe of "Us".</p></div>
+            <div class="spot-card"><img src="spot5.jpg"><p class="spot-msg">Forever song.</p></div>
+            <div class="spot-card"><img src="spot6.jpg"><p class="spot-msg">Can't wait to see you.</p></div>
+            <div class="spot-card"><img src="spot7.jpg"><p class="spot-msg">Reminds me of your smile.</p></div>
+            <div class="spot-card"><img src="spot8.jpg"><p class="spot-msg">Every beat is for you.</p></div>
+            <div class="spot-card"><img src="spot9.jpg"><p class="spot-msg">Our late-night tunes.</p></div>
+            <div class="spot-card"><img src="spot10.jpg"><p class="spot-msg">The teasing starts here...</p></div>
+            <div class="spot-card"><img src="spot11.jpg"><p class="spot-msg">You + Me = ❤️</p></div>
+            <div class="spot-card"><img src="spot12.jpg"><p class="spot-msg">I Love You, Bilauta.</p></div>
+        </div>
+        <button class="btn" onclick="next(4)">Read My Heart</button>
+    </div>
+
+    <div id="stage4" class="screen" style="background: #1a0202;">
+        <div class="letter-scroll">
+            <img src="letter1.jpg" class="letter-page"><img src="letter2.jpg" class="letter-page">
+            <img src="letter3.jpg" class="letter-page"><img src="letter4.jpg" class="letter-page">
+        </div>
+        <button class="btn" onclick="next(5)">Reach Shailly</button>
+    </div>
+
+    <div id="stage5" class="screen">
+        <img src="me-blushing.jpg" id="blush-img">
+        <div class="meter-bg"><div id="meter-fill"></div></div>
+        <p id="blush-status" style="margin-top:15px; color:var(--gold); font-weight: bold;">She's 0% blushing...</p>
+        <button class="btn" onclick="tease()">TEASE HER 💄</button>
+    </div>
+
+    <div id="stage6" class="screen" style="background: radial-gradient(circle, #4a0404, #000);">
+        <div style="width: 85%; max-height: 60vh; overflow-y: auto; text-align: left; padding: 25px; background: rgba(0,0,0,0.5); border-radius: 20px; line-height: 1.8;">
+           Honestly, my Love for you is increasing day by day...<br><br>
+           You stood with me in every single time... you proved me and my thoughts wrong. The sweet permission, the beautiful hesitations, the cute banters are the things I cherish most.<br><br>
+           I Loveeeeeeeeeeeeeee Youuuuuuuuuuuuuuuu soooooooooooooo muuuuuucccchhhhhhhhhhhhh babbbbbyyyyyyy 🎀💕🧿
+        </div>
+        <p style="margin-top:30px; color:var(--gold); font-family: cursive; font-size: 1.8rem;">Forever Yours, Shailly ♡</p>
+    </div>
+
+    <script>
+        let input = "";
+        const bgm = document.getElementById('bgm');
+
+        function press(num) {
+            if (input.length < 4) {
+                input += num;
+                document.getElementById('d' + input.length).classList.add('filled');
+                if (input === "1211") { bgm.play(); setTimeout(() => next(2), 800); }
+                else if (input.length === 4) { setTimeout(() => { input = ""; document.querySelectorAll('.dot').forEach(d => d.classList.remove('filled')); }, 500); }
+            }
+        }
+
+        function next(n) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById('stage' + n).classList.add('active'); }
+
+        function startTravel() {
+            document.getElementById('bridge-btn').style.display = 'none';
+            document.getElementById('heart-traveler').style.left = "90%";
+            setTimeout(() => { document.getElementById('map-next').style.display = 'inline-block'; }, 5000);
+        }
+
+        let blush = 0;
+        function tease() {
+            if (blush === 0) startHeartRain();
+            blush += 10;
+            document.getElementById('meter-fill').style.width = blush + "%";
+            document.getElementById('blush-status').innerText = "She's " + blush + "% blushing...";
+            if (blush >= 100) setTimeout(() => next(6), 1000);
+        }
+
+        function startHeartRain() {
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.innerHTML = ["❤️", "💖", "💕", "🧿"][Math.floor(Math.random()*4)];
+                h.className = 'heart-particle';
+                h.style.left = Math.random() * 100 + "vw";
+                h.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 5000);
+            }, 250);
+        }
+    </script>
+</body>
+</html>
